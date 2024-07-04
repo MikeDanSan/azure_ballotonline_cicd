@@ -153,6 +153,8 @@ resource "azurerm_linux_virtual_machine" "BallotOnline-vm" {
   admin_username        = "adminuser"
   network_interface_ids = [azurerm_network_interface.BallotOnline-nic.id]
 
+  custom_data = filebase64("customdata.tpl")
+
   admin_ssh_key {
     username   = "adminuser"
     public_key = file("~/.ssh/auth_key.pub")
