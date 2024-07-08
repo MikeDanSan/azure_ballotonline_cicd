@@ -31,8 +31,8 @@ Azure resource group: a logical container that holds related resources for an Az
 resources such as virtual machines, storage accounts, and databases as a single entity, making it easier to deploy, monitor, 
 and maintain the infrastructure.
 */
-resource "azurerm_resource_group" "BallotOnline-rg" {
-  name     = "BallotOnline-resources"
+resource "azurerm_resource_group" "CCS670PoCRG" {
+  name     = "CCS670PoCRG"
   location = "East Us"
 
   tags = {
@@ -47,8 +47,8 @@ subnets, route tables, and network security groups within the VNet, enabling cus
 */
 resource "azurerm_virtual_network" "BallotOnline-vn" {
   name                = "BallotOnline-network"
-  resource_group_name = azurerm_resource_group.BallotOnline-rg.name
-  location            = azurerm_resource_group.BallotOnline-rg.location
+  resource_group_name = azurerm_resource_group.CCS670PoCRG.name
+  location            = azurerm_resource_group.CCS670PoCRG.location
   address_space       = ["10.123.0.0/16"]
 
   tags = {
@@ -63,7 +63,7 @@ secure network traffic by isolating different parts of the application or servic
 */
 resource "azurerm_subnet" "BallotOnline-subnet" {
   name                 = "BallotOnline-subnet"
-  resource_group_name  = azurerm_resource_group.BallotOnline-rg.name
+  resource_group_name  = azurerm_resource_group.CCS670PoCRG.name
   virtual_network_name = azurerm_virtual_network.BallotOnline-vn.name
   address_prefixes     = ["10.123.1.0/24"]
 }
@@ -75,8 +75,8 @@ NSGs can be applied to individual network interfaces, virtual machines, and subn
 */
 resource "azurerm_network_security_group" "BallotOnline-sg" {
   name                = "BallotOnline-sg"
-  location            = azurerm_resource_group.BallotOnline-rg.location
-  resource_group_name = azurerm_resource_group.BallotOnline-rg.name
+  location            = azurerm_resource_group.CCS670PoCRG.location
+  resource_group_name = azurerm_resource_group.CCS670PoCRG.name
 
   tags = {
     environment = "dev"
@@ -93,7 +93,7 @@ resource "azurerm_network_security_rule" "BallotOnline-dev-nsr" {
   destination_port_range      = "*"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
-  resource_group_name         = azurerm_resource_group.BallotOnline-rg.name
+  resource_group_name         = azurerm_resource_group.CCS670PoCRG.name
   network_security_group_name = azurerm_network_security_group.BallotOnline-sg.name
 }
 
@@ -114,8 +114,8 @@ The resource includes configuration options for IP address allocation, DNS setti
 */
 resource "azurerm_public_ip" "BallotOnline-ip" {
   name                = "BallotOnline-ip"
-  resource_group_name = azurerm_resource_group.BallotOnline-rg.name
-  location            = azurerm_resource_group.BallotOnline-rg.location
+  resource_group_name = azurerm_resource_group.CCS670PoCRG.name
+  location            = azurerm_resource_group.CCS670PoCRG.location
   allocation_method   = "Dynamic"
 
   tags = {
@@ -130,8 +130,8 @@ such as private IP addresses, public IP addresses, and associated security group
 */
 resource "azurerm_network_interface" "BallotOnline-nic" {
   name                = "BallotOnline-nic"
-  location            = azurerm_resource_group.BallotOnline-rg.location
-  resource_group_name = azurerm_resource_group.BallotOnline-rg.name
+  location            = azurerm_resource_group.CCS670PoCRG.location
+  resource_group_name = azurerm_resource_group.CCS670PoCRG.name
 
   ip_configuration {
     name                          = "internal"
@@ -145,10 +145,10 @@ resource "azurerm_network_interface" "BallotOnline-nic" {
   }
 }
 
-resource "azurerm_linux_virtual_machine" "BallotOnline-vm" {
-  name                  = "BallotOnline-vm"
-  resource_group_name   = azurerm_resource_group.BallotOnline-rg.name
-  location              = azurerm_resource_group.BallotOnline-rg.location
+resource "azurerm_linux_virtual_machine" "BOWebServer" {
+  name                  = "BOWebServer"
+  resource_group_name   = azurerm_resource_group.CCS670PoCRG.name
+  location              = azurerm_resource_group.CCS670PoCRG.location
   size                  = "Standard_B1s"
   admin_username        = "adminuser"
   network_interface_ids = [azurerm_network_interface.BallotOnline-nic.id]
