@@ -154,6 +154,7 @@ resource "azurerm_linux_virtual_machine" "BOWebServer" {
   network_interface_ids = [azurerm_network_interface.BallotOnline-nic.id]
 
   custom_data = filebase64("customdata.tpl")
+  user_data   = filebase64("userdata.tpl")
 
   admin_ssh_key {
     username   = "adminuser"

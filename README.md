@@ -31,4 +31,53 @@ Here you will find required accounts,software,etc. to be able to run the project
 - Azure CLI
 - Terraform
 
+## Proof of Concept (PoC) Examples
 
+> Each Poc example aligns with a specific folder.
+
+### Azure Virtual Machine with Nginx configured
+
+This example can be found in the `tf_bo_nginx_webserver` directory.
+
+In this PoC terraform is used to create a linux vm that installs and configures nginx using custom and user data to automate everything.
+
+In the next example the Azure machine image (AMI) is created based on the virutal machine created in this example PoC.
+
+### Azure Virtual Machine Scale Set with Load Balancer
+
+***IMPORTANT***: The Azure machine image (AMI) was created from the example above `tf_bo_nginx_webserver`
+
+This example can be found in the `tf_bo_nginx_scaleset` directory.
+
+In this PoC terrform is used to create a scale set of the AMI BallotOnline Web Server to create two replicas with a load balancer. 
+
+### Azure Web Application Service
+
+This example can be found in the `tf_bo_web_app_srv` directory.
+
+
+## Common Usage instructions
+
+1. Log into your Azure account through Azure CLI.
+    > Choose your preferred method.
+
+2. Change directory to the Poc you want to use
+
+    ```bash
+    cd [specify_PoC_dir]
+    ```
+
+3. (Optional) Use terraform plan and validate 
+
+    ```bash
+    # Optional format terraform
+    terraform fmt
+
+    terraform plan
+    ```
+4. Use terraform apply to create resources
+
+    ```bash
+    # Optional: -auto-approve (skips approval)
+    terraform apply
+    ```
